@@ -6,6 +6,7 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { routes } from '../../../app.routes';
+import { environment } from '../../../../environments/environment.development';
 
 @Component({
   selector: 'app-navbar',
@@ -31,6 +32,7 @@ export class NavbarComponent {
 
   darkTheme() {
     this.theme.set('dark');
+    const data = environment.mapsApp;
   }
 
   lightTheme() {
