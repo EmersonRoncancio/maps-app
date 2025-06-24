@@ -1,1 +1,24 @@
-<p>markers-page works!</p>,
+<div #map class="h-[calc(100vh-64px)]"></div>
+<section class="fixed w-[256px] bg-white rounded-md top-20 left-16 p-4">
+  <h2 class="text-xl font-bold text-black">Marcadores</h2>
+
+  <div class="flex flex-col gap-2">
+    @for (marke of markers(); track marke.id) {
+    <div class="flex items-center gap-2">
+      <span class="text-gray-600 text-sm">
+        {{ marke.mapboxMarker.getLngLat() | json }}
+      </span>
+      <input
+        type="radio"
+        name="radio-1"
+        class="radio"
+        [class]="'radio-' + colortin()"
+        [style]="{ backgroundColor: marke.mapboxMarker._color }"
+        (click)="flyToMarker(marke.mapboxMarker.getLngLat())"
+      />
+    </div>
+    } @empty {
+    <div class="text-gray-500">No hay marcadores</div>
+    }
+  </div>
+</section>
