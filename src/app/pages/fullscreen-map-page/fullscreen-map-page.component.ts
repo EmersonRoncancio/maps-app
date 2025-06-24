@@ -9,13 +9,13 @@ import {
 } from '@angular/core';
 import mapboxgl from 'mapbox-gl';
 import { environment } from '../../../environments/environment';
-import { DecimalPipe } from '@angular/common';
+import { DecimalPipe, JsonPipe } from '@angular/common';
 
 mapboxgl.accessToken = environment.mapsApp;
 
 @Component({
   selector: 'app-fullscreen-map-page',
-  imports: [DecimalPipe],
+  imports: [DecimalPipe, JsonPipe],
   templateUrl: './fullscreen-map-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: `
@@ -38,6 +38,7 @@ export class FullscreenMapPageComponent implements AfterViewInit {
 
   zoom = signal(14);
   map = signal<mapboxgl.Map | null>(null);
+  cordinates = signal({ lat: 40, lng: -74.5 });
 
   zoomEffect = effect(() => {
     if (!this.map()) return;
@@ -48,10 +49,11 @@ export class FullscreenMapPageComponent implements AfterViewInit {
     if (!this.divElement()) return;
     const mapContainer = this.divElement()?.nativeElement;
 
+    const { lat, lng } = this.cordinates();
     const map = new mapboxgl.Map({
       container: mapContainer, // container ID
       style: 'mapbox://styles/mapbox/streets-v12', // style URL
-      center: [-74.5, 40], // starting position [lng, lat]
+      center: [lng, lat], // starting position [lng, lat]
       zoom: this.zoom(), // starting zoom
     });
     this.mapListener(map);
@@ -60,10 +62,16 @@ export class FullscreenMapPageComponent implements AfterViewInit {
   mapListener(map: mapboxgl.Map) {
     map.on('zoomend', (event) => {
       const newZoom = event.target.getZoom();
-      console.log('Zoom level changed:', newZoom);
       this.zoom.set(newZoom);
     });
 
+    map.on('moveend', (event) => {
+      const center = event.target.getCenter();
+      this.cordinates.set({ lat: center.lat, lng: center.lng });
+    });
+
+    map.addControl(new mapboxgl.FullscreenControl(), 'top-right');
+    map.addControl(new mapboxgl.NavigationControl(), 'top-right');
     this.map.set(map);
   }
 

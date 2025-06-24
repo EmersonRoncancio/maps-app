@@ -1,5 +1,5 @@
 <div class="w-full h-[89vh]" #map></div>
-<section id="controls">
+<section class="my-2" id="controls">
   <h2 class="text-black font-bold">
     Zoom
     <small class="text-xs text-gray-500 font-normal">
@@ -15,4 +15,13 @@
     #textInput
     (input)="onZoomChange(textInput.value)"
   />
+  <h2 class="font-bold text-black">Cordenadas:</h2>
+  <pre
+    >{{
+      {
+        lat: cordinates().lat | number : "1.4-4",
+        lng: cordinates().lng | number : "1.4-4"
+      } | json
+    }}
+  </pre>
 </section>
