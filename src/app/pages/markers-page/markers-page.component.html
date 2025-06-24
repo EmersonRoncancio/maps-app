@@ -15,6 +15,7 @@
         [class]="'radio-' + colortin()"
         [style]="{ backgroundColor: marke.mapboxMarker._color }"
         (click)="flyToMarker(marke.mapboxMarker.getLngLat())"
+        (dblclick)="deleMarker(marke)"
       />
     </div>
     } @empty {

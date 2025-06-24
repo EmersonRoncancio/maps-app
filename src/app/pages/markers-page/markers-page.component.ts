@@ -100,4 +100,12 @@ export class MarkersPageComponent implements AfterViewInit {
       zoom: 18,
     });
   }
+
+  deleMarker(marker: Marker) {
+    marker.mapboxMarker.remove();
+    this.markers.update((prevMarkers) =>
+      prevMarkers.filter((m) => m.id !== marker.id)
+    );
+    localStorage.setItem('MARKERS', JSON.stringify(this.markers()));
+  }
 }
