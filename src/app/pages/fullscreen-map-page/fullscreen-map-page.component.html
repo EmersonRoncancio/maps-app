@@ -1,2 +1,18 @@
-<p>fullscreen-map-page works!</p>
-,
+<div class="w-full h-[89vh]" #map></div>
+<section id="controls">
+  <h2 class="text-black font-bold">
+    Zoom
+    <small class="text-xs text-gray-500 font-normal">
+      {{ zoom() | number : "1.0-0" }}
+    </small>
+  </h2>
+  <input
+    type="range"
+    min="1"
+    max="19"
+    [value]="zoom()"
+    className="range range-neutral"
+    #textInput
+    (input)="onZoomChange(textInput.value)"
+  />
+</section>
